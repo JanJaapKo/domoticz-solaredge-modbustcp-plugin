@@ -353,7 +353,7 @@ class BasePlugin:
                                     to_lookup = int(inverter_values[unit[Column.MODBUSNAME]])
                                 except KeyError as e:
                                     to_lookup = -1
-                                    Domoticz.Error("missing data in modbus: "+str(e))
+                                    Domoticz.Error("missing data in modbus inverter_values: "+str(e))
 
                                 if to_lookup >= 0 and to_lookup < len(lookup_table):
                                     value = lookup_table[to_lookup]
@@ -384,7 +384,11 @@ class BasePlugin:
 
                             else:
                                 Domoticz.Debug("-> copying...")
-                                value = inverter_values[unit[Column.MODBUSNAME]]
+                                try:
+                                    value = inverter_values[unit[Column.MODBUSNAME]]
+                                except KeyError as e:
+                                    value = "Key not found in inverter_values table: {}".format(inverter_values)
+                                    Domoticz.Error("missing data in modbus inverter_values: "+str(e))
 
                             Domoticz.Debug("value = {}".format(value))
 
