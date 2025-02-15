@@ -354,6 +354,7 @@ class BasePlugin:
                                 except KeyError as e:
                                     to_lookup = -1
                                     Domoticz.Error("missing data in modbus inverter_values: "+str(e))
+                                    continue #data is missing, no point to continue for this device
 
                                 if to_lookup >= 0 and to_lookup < len(lookup_table):
                                     value = lookup_table[to_lookup]
