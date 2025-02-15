@@ -365,12 +365,16 @@ class BasePlugin:
                             elif unit[Column.MATH] and Parameters["Mode4"] == "math_enabled":
                                 Domoticz.Debug("-> calculating...")
                                 m = unit[Column.MATH]
-                                if unit[Column.MODBUSSCALE]:
-                                    m.update(inverter_values[unit[Column.MODBUSNAME]], inverter_values[unit[Column.MODBUSSCALE]])
-                                else:
-                                    m.update(inverter_values[unit[Column.MODBUSNAME]])
+                                try:
+                                    if unit[Column.MODBUSSCALE]:
+                                        m.update(inverter_values[unit[Column.MODBUSNAME]], inverter_values[unit[Column.MODBUSSCALE]])
+                                    else:
+                                        m.update(inverter_values[unit[Column.MODBUSNAME]])
 
-                                value = m.get()
+                                    value = m.get()
+                                except KeyError as e:
+                                    value = "Key not found in inverter_values table: {}".format(inverter_values)
+                                    Domoticz.Error("missing data in modbus inverter_values: "+str(e))
 
                             # When there is no math object then just store the latest value.
                             # Some values from the inverter need to be scaled before they can be stored.
