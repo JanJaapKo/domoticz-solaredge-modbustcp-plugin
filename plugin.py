@@ -376,7 +376,8 @@ class BasePlugin:
                                 except KeyError as e:
                                     value = "Key not found in inverter_values table: {}".format(inverter_values)
                                     Domoticz.Error("missing data in modbus inverter_values: "+str(e))
-
+                                    continue
+                                    
                             # When there is no math object then just store the latest value.
                             # Some values from the inverter need to be scaled before they can be stored.
 
@@ -394,6 +395,7 @@ class BasePlugin:
                                 except KeyError as e:
                                     value = "Key not found in inverter_values table: {}".format(inverter_values)
                                     Domoticz.Error("missing data in modbus inverter_values: "+str(e))
+                                    continue
 
                             Domoticz.Debug("value = {}".format(value))
 
