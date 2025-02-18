@@ -317,7 +317,7 @@ class BasePlugin:
                 inverter_values = self.inverter.read_all()
             except ConnectionException:
                 inverter_values = None
-                Domoticz.Debug("ConnectionException")
+                Domoticz.Error("ConnectionException")
             else:
 
                 if inverter_values:
@@ -384,7 +384,11 @@ class BasePlugin:
                             elif unit[Column.MODBUSSCALE]:
                                 Domoticz.Debug("-> scaling...")
                                 # we need to do some calculation here
-                                value = inverter_values[unit[Column.MODBUSNAME]] * (10 ** inverter_values[unit[Column.MODBUSSCALE]])
+                                try:
+                                    value = inverter_values[unit[Column.MODBUSNAME]] * (10 ** inverter_values[unit[Column.MODBUSSCALE]])
+                                except KeyError as e:
+                                    Domoticz.Error("missing data in modbus inverter_values: "+str(e))
+                                    continue
 
                             # Some values require no action but storing in Domoticz.
 
