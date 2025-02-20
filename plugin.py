@@ -354,7 +354,7 @@ class BasePlugin:
                                 except KeyError as e:
                                     to_lookup = -1
                                     Domoticz.Error("missing data in modbus inverter_values: "+str(e))
-                                    continue #data is missing, no point to continue for this device
+                                    return #data is missing, no point to continue for this device
 
                                 if to_lookup >= 0 and to_lookup < len(lookup_table):
                                     value = lookup_table[to_lookup]
@@ -376,7 +376,7 @@ class BasePlugin:
                                 except KeyError as e:
                                     value = "Key not found in inverter_values table: {}".format(inverter_values)
                                     Domoticz.Error("missing data in modbus inverter_values: "+str(e))
-                                    continue
+                                    return
                                     
                             # When there is no math object then just store the latest value.
                             # Some values from the inverter need to be scaled before they can be stored.
@@ -388,7 +388,7 @@ class BasePlugin:
                                     value = inverter_values[unit[Column.MODBUSNAME]] * (10 ** inverter_values[unit[Column.MODBUSSCALE]])
                                 except KeyError as e:
                                     Domoticz.Error("missing data in modbus inverter_values: "+str(e))
-                                    continue
+                                    return
 
                             # Some values require no action but storing in Domoticz.
 
@@ -399,7 +399,7 @@ class BasePlugin:
                                 except KeyError as e:
                                     value = "Key not found in inverter_values table: {}".format(inverter_values)
                                     Domoticz.Error("missing data in modbus inverter_values: "+str(e))
-                                    continue
+                                    return
 
                             Domoticz.Debug("value = {}".format(value))
 
